@@ -17,6 +17,7 @@ MyVector<T>::MyVector(MyVector &vector) {
 
 template<typename T>
 MyVector<T>::~MyVector() {
+
     delete[] this->array;
 }
 
@@ -39,7 +40,6 @@ int MyVector<T>::capacity() {
 
 template<typename T>
 void MyVector<T>::clear() {
-//    delete[] this->array;
     this->capacity_ = 0;
     this->size_ = 0;
 }
@@ -160,23 +160,6 @@ std::string MyVector<T>::toString() {
         string += " ";
     }
     return string;
-}
-
-template<typename T>
-bool operator==(MyVector<T> &x, MyVector<T> &y) {
-    if (x.size() != y.size())
-        return false;
-
-    for (int i = 0; i < x.size(); ++i) {
-        if (x.get(i) != y.get(i))
-            return false;
-    }
-    return true;
-}
-
-template<typename T>
-bool operator!=(MyVector<T> &x, MyVector<T> &y) {
-    return !(x == y);
 }
 
 template

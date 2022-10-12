@@ -3,13 +3,13 @@
 #define MY_VECTOR_MY_VECTOR_H
 
 #include <iostream>
+#include "my_iterator.h"
 
 using namespace std;
 
 template<typename T>
 class MyVector {
 public:
-
     MyVector();
 
     MyVector(int capacity);
@@ -46,39 +46,42 @@ public:
 
     std::string toString();
 
+    friend bool operator==(MyVector<T> &x, MyVector<T> &y) {
+        if (x.size() != y.size())
+            return false;
 
-    friend bool operator []()
+        for (int i = 0; i < x.size(); ++i) {
+            if (x.get(i) != y.get(i))
+                return false;
+        }
+        return true;
+    }
 
-    friend bool operator==(MyVector<T> &x, MyVector<T> &y);
+    friend bool operator!=(MyVector<T> &x, MyVector<T> &y) {
+        return !(x == y);
+    }
 
-    friend bool operator!=(MyVector<T> &x, MyVector<T> &y);
-
-    class Iterator {
-    public:
-        Iterator(T *first) : cur(first) {}
-
-        T &operator+(int n) { return *(cur + n); }
-
-        T &operator-(int n) { return *(cur - n); }
-
-        T operator++(int) { return *cur++; }
-
-        T &operator--(int) { return *cur--; }
-
-        T &operator++() { return *++cur; }
-
-        T &operator--() { return *--cur; }
-
-
-        bool operator!=(const Iterator &it) { return cur != it.cur; }
-
-        bool operator==(const Iterator &it) { return cur == it.cur; }
-
-        T &operator*() { return *cur; }
-
-    private:
-        T *cur;
+    friend std::ostream &operator<<(std::ostream &out, MyVector<T> &myVector) {
+        out << myVector.toString() << std::endl;
+        return out;
     };
+
+    friend std::istream &operator>>(std::istream &in, MyVector<T> &myVector) {
+        T *obj = new T;
+        in >> *obj;
+        myVector.pushBack(*obj);
+        delete obj;
+        return in;
+    }
+
+    MyIterator<T> begin() { return array; }
+
+    MyIterator<T> end() { return array + size_; }
+
+    MyReverseIterator<T> rbegin() { return array + size_ - 1; }
+
+    MyReverseIterator<T> rend() { return array - 1; }
+
 
 private:
     int capacity_;

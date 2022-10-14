@@ -1,31 +1,41 @@
 #include "../lib/user_functions.h"
 
 
-
-#define HELP "Menu:"
+#define HELP "Menu:\n\
+1) Create new empty vector\n\
+2) Create new vector(size) and random fill\n"
 
 
 void menu() {
-    cout << HELP << endl;
+//    cout << HELP << endl;
     bool flag = true;
     std::string str;
 
     do {
-        cout << ">";
+//        cout << ">";
         getline(cin, str);
         switch (str[0]) {
             case '1': {
-                cout << "111" << endl;
+//                cout << "Created a empty vector" << endl;
                 break;
             }
             case '2': {
-                cout << "222" << endl;
+                int size = 0;
+                cout << "Enter a size:" << endl;
+                cin >> size;
+                cout << "Size: " << size << endl;
                 break;
             }
             case '0' : {
                 flag = false;
                 break;
-
+            }
+            case '\0' : {
+                break;
+            }
+            default: {
+                cout << "unknown command!" << endl;
+                break;
             }
         }
 

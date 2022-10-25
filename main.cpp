@@ -1,16 +1,11 @@
-#include <iostream>
+#include <vector>
 #include "lib/header.h"
 
 using namespace std;
 
 int main() {
-    /*MyVector<int> vector2(10);
-    randomFillVector(vector2);
-    cout << vector2 << endl;
 
-    menu();*/
-
-    menu();
+    testmenu();
 
     return 0;
 }

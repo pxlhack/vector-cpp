@@ -28,19 +28,19 @@ public:
 
     bool is_empty();
 
-    bool contains(T const &elem);
+    bool contains(T const &item);
 
-    int index_of(T const &elem);
+    int index_of(T const &item);
 
     T get(int index) const;
 
-    void push_back(T const &elem);
+    void push_back(T const &item);
 
-    void set(const T &elem, int index);
+    void set(const T &item, int index);
 
-    void insert(T elem, int index);
+    void insert(T item, int index);
 
-    void remove(T const &elem);
+    void remove(T const &item);
 
     void erase(int index);
 
@@ -62,7 +62,7 @@ public:
     }
 
     friend std::ostream &operator<<(std::ostream &out, MyVector<T> &myVector) {
-        out << myVector.toString() << std::endl;
+        out << myVector.toString();
         return out;
     };
 
@@ -73,6 +73,12 @@ public:
         delete obj;
         return in;
     }
+
+    int getCount() const;
+
+    void setCount(int count);
+
+    MyVector<T> &operator=(const MyVector<T> &myVector);
 
     MyIterator<T> begin() { return array; }
 
@@ -87,6 +93,7 @@ private:
     int capacity_;
     int size_;
     T *array;
+    int count;
 
     void resize();
 };

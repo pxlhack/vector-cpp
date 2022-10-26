@@ -18,6 +18,7 @@
 13) Сhange the value in the position\n\
 14) Get position in vector for a given value\n\
 15) Delete item by value\n\
+16) Iterators\n\
 0) Exit\n"
 
 
@@ -306,7 +307,7 @@ void testmenu() {
                             if (myVector[0]->contains(item))
                                 cout << "Vector contains " << item << endl;
                             else
-                                cout << "Vector does not contains " << item << endl;
+                                cout << "Vector does not contain " << item << endl;
                             cout << "### number of requests: " << myVector[0]->getCount() << " ###\n\n";
                             myVector[0]->setCount(0);
 
@@ -446,7 +447,7 @@ void testmenu() {
                                 cout << "Position of " << item << " = " << index << endl;
 
                             } else
-                                cout << "Vector does not contains " << item << endl;
+                                cout << "Vector does not contain " << item << endl;
                             cout << "### number of requests: " << myVector[0]->getCount() << " ###\n\n";
                             flag14 = false;
                         }
@@ -494,6 +495,81 @@ void testmenu() {
                         }
                     } while (flag15);
 
+                    break;
+                }
+                case 16: {
+                    if (myVector[0] == nullptr) {
+                        cout << "-- Vector not created --\n Enter '1' or '2' to create vector\n\n ";
+                        break;
+                    }
+
+                    if (myVector[0]->is_empty()) {
+                        cout << "-- Vector is empty --\n Enter '3' to insert item to vector\n\n";
+                        break;
+                    }
+
+                    bool flag16 = true;
+                    string str16;
+                    do {
+                        cout << "1) it++\n2) it--\n3) *it\n4) begin\n5) end\n6) show\n";
+                        cout << ">";
+                        cin >> str16;
+                        MyIterator<int> it;
+                        try {
+                            int num = stoul(str16);
+                            switch (num) {
+                                case 1: {
+                                    if ((it) == myVector[0]->end())
+                                        cout << "iterator is not installed\n";
+                                    else
+                                        it++;
+                                    break;
+                                }
+                                case 2: {
+                                    it--;
+                                    break;
+
+                                }
+                                case 3: {
+                                    if (it == myVector[0]->end())
+                                        cout << "iterator is not installed\n";
+                                    else
+                                        cout << *it << endl;
+
+                                    break;
+                                }
+                                case 4: {
+                                    it = myVector[0]->begin();
+                                    break;
+                                }
+                                case 5: {
+                                    it = myVector[0]->end();
+                                    break;
+                                }
+                                case 6: {
+                                    auto it2 = myVector[0]->begin();
+                                    while (it2 != myVector[0]->end()) {
+                                        cout << *it2 << " ";
+                                        it2++;
+                                    }
+                                    cout << endl;
+                                    break;
+                                }
+                                case 0: {
+                                    flag16 = false;
+                                    break;
+                                }
+                                default: {
+                                    cout << "!!! unknown command: " << str16 << " !!!" << endl;
+                                    break;
+
+                                }
+                            }
+                        } catch (exception &e) {
+                            cout << "!!! unknown command: " << str16 << " !!!" << endl;
+                        }
+
+                    } while (flag16);
                     break;
                 }
                 case 0 : {

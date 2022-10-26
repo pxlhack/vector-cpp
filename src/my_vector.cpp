@@ -147,7 +147,7 @@ void MyVector<T>::remove(const T &item) {
 
 template<typename T>
 void MyVector<T>::erase(int index) {
-    if (index > this->size_) {
+    if (index > this->size_ || index < 0) {
         throw "Error!\nOut of range\n";
     }
 

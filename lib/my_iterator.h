@@ -4,6 +4,8 @@
 template<typename T>
 class MyIterator {
 public:
+    MyIterator() {}
+
     MyIterator(T *first) : cur(first) {}
 
     T &operator+(int n) { return *(cur + n); }

@@ -44,8 +44,6 @@ public:
 
     void erase(int index);
 
-    std::string toString();
-
     friend bool operator==(MyVector<T> &x, MyVector<T> &y) {
         if (x.size() != y.size())
             return false;
@@ -95,6 +93,7 @@ private:
     T *array;
     int count;
 
+    std::string toString();
     void resize();
 };
 

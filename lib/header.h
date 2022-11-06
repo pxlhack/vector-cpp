@@ -1,5 +1,3 @@
-
-
 #ifndef MY_VECTOR_HEADER_H
 #define MY_VECTOR_HEADER_H
 

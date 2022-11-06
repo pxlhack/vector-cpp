@@ -1,166 +1,164 @@
 #include "../lib/my_vector.h"
 
+template<typename T>
+MyVector<T>::MyVector() {
+    this->capacity = 0;
+}
 
 template<typename T>
 MyVector<T>::MyVector(int capacity) {
-    init_vector(capacity);
+    this->capacity = capacity;
+    this->array = new T[capacity];
 }
 
 template<typename T>
 MyVector<T>::MyVector(MyVector &vector) {
-    init_vector(vector.size());
-    for (int i = 0; i < vector.size(); ++i) {
-        push_back(vector.get(i));
+    this->capacity = vector.size;
+    this->array = new T[vector.size];
+
+    for (int i = 0; i < vector.getSize(); ++i) {
+        this->pushBack(vector.getValue(i));
     }
 }
 
 template<typename T>
 MyVector<T>::~MyVector() {
-    delete[] this->array;
+    if (this->array != nullptr) delete[] this->array;
 }
 
 template<typename T>
-void MyVector<T>::init_vector(int init_capacity) {
-    this->size_ = 0;
-    this->capacity_ = init_capacity;
-    this->array = new T[init_capacity];
+int MyVector<T>::getSize() const {
+    return this->size;
 }
 
 template<typename T>
-int MyVector<T>::size() const {
-    return this->size_;
-}
-
-template<typename T>
-int MyVector<T>::capacity() {
-    return this->capacity_;
+int MyVector<T>::getCapacity() const {
+    return this->capacity;
 }
 
 template<typename T>
 void MyVector<T>::clear() {
-    this->capacity_ = 0;
-    this->size_ = 0;
-}
-
-template<typename T>
-bool MyVector<T>::is_empty() {
-    return this->size_ == 0;
-}
-
-template<typename T>
-T MyVector<T>::get(int index) const {
-    if (index >= this->size_)
-        throw "Error!\nOut of range\n";
-    return this->array[index];
-}
-
-template<typename T>
-void MyVector<T>::set(T const &item, int index) {
-
-    if (index > this->size_)
-        throw "Error!\nOut of range\n";
-    this->array[index] = item;
-}
-
-template<typename T>
-void MyVector<T>::push_back(T const &item) {
-    count = 1;
-    if (this->size_ >= this->capacity_) {
-        resize();
-        count += size();
-    }
-
-    set(item, this->size_);
-    this->size_++;
-}
-
-template<typename T>
-void MyVector<T>::resize() {
-    T *newArray = new T[this->capacity_ + 1];
-    for (int i = 0; i < this->size_; ++i) {
-        newArray[i] = array[i];
-    }
-
-    this->capacity_++;
-
     delete[] this->array;
-    this->array = newArray;
+    this->capacity = 0;
+    this->size = 0;
+    this->array = nullptr;
 }
 
 template<typename T>
-MyVector<T>::MyVector() {
-    init_vector(1);
+bool MyVector<T>::isEmpty() {
+    return this->size == 0;
 }
 
 template<typename T>
-bool MyVector<T>::contains(const T &item) {
-    if (index_of(item) == -1) return false;
+T MyVector<T>::getValue(int pos) const {
+    if (pos >= this->size || pos < 0) {
+        throw "Error: Out of range\n";
+    }
+    return this->array[pos];
+}
+
+template<typename T>
+void MyVector<T>::setValue(T val, int pos) {
+    if (pos >= this->size || pos < 0) {
+        throw "Error: Out of range\n";
+    }
+    this->array[pos] = val;
+}
+
+template<typename T>
+void MyVector<T>::pushBack(T val) {
+    this->insert(val, this->size);
+}
+
+template<typename T>
+void MyVector<T>::increaseCapacity() {
+    this->capacity++;
+
+    if (this->array == nullptr) {
+        this->array = new T[this->capacity];
+    } else {
+        T *newArray = new T[this->capacity];
+
+        for (int i = 0; i < this->size; ++i) {
+            this->previousOperationValuesCount++;
+            newArray[i] = array[i];
+        }
+
+        delete[] this->array;
+        this->array = newArray;
+    }
+}
+
+template<typename T>
+bool MyVector<T>::contains(T val) {
+    this->previousOperationValuesCount = 0;
+    if (indexOf(val) == -1) return false;
     return true;
 }
 
 template<typename T>
-int MyVector<T>::index_of(T const &item) {
-    for (int i = 0; i < this->size_; ++i) {
-        if (this->array[i] == item) {
-            count = i + 1;
+int MyVector<T>::indexOf(T val) {
+    for (int i = 0; i < this->size; ++i) {
+        this->previousOperationValuesCount++;
+        if (this->array[i] == val) {
             return i;
         }
     }
-    count = size();
     return -1;
 }
 
 template<typename T>
-void MyVector<T>::insert(T item, int index) {
-    count = 0;
-    if (index > this->size_) {
-        throw "Error!\nOut of range\n";
+void MyVector<T>::insert(T val, int pos) {
+    if (pos > this->size || pos < 0) {
+        throw "Error: Out of range\n";
     }
 
+    this->previousOperationValuesCount = 0;
 
-    if (index < this->size_) {
-        if (this->size_ >= this->capacity_) {
-            count = size();
-            resize();
-        }
-        cout << count << endl;
-        for (int i = this->size_; i > index; --i) {
+    if (this->size >= this->capacity) {
+        this->increaseCapacity();
+    }
+
+    if (pos < this->size) {
+        for (int i = this->size; i > pos; --i) {
+            this->previousOperationValuesCount++;
             this->array[i] = this->array[i - 1];
         }
-        set(item, index);
-        count += size() - index + 1;
-        // 7 = 10 - 4 + 1
-        cout << count << endl;
-        this->size_++;
     }
 
-    if (index == this->size_) {
-        push_back(item);
+    this->array[pos] = val;
+    this->size++;
+    this->previousOperationValuesCount++;
+}
+
+template<typename T>
+void MyVector<T>::removeByValue(T val) {
+    int pos = indexOf(val);
+    if (pos != -1) {
+        erase(pos);
     }
 }
 
 template<typename T>
-void MyVector<T>::remove(const T &item) {
-    int index = index_of(item);
-    erase(index);
-}
-
-template<typename T>
-void MyVector<T>::erase(int index) {
-    if (index > this->size_ || index < 0) {
-        throw "Error!\nOut of range\n";
+void MyVector<T>::erase(int pos) {
+    if (pos >= this->size || pos < 0) {
+        throw "Error: Out of range\n";
     }
 
-    for (int i = index; i < this->size_; ++i) {
+    this->previousOperationValuesCount = 0;
+
+    for (int i = pos; i < this->size; ++i) {
+        this->previousOperationValuesCount++;
         this->array[i] = this->array[i + 1];
     }
-    this->size_--;
+
+    this->size--;
 }
 
 template<typename T>
 std::string MyVector<T>::toString() {
     std::string string;
-    for (int i = 0; i < this->size_; ++i) {
+    for (int i = 0; i < this->size; ++i) {
         string += std::to_string(this->array[i]);
         string += " ";
     }
@@ -173,27 +171,21 @@ MyVector<T> &MyVector<T>::operator=(const MyVector<T> &myVector) {
         return *this;
     }
 
-    int newSize = myVector.size();
+    int newSize = myVector.getSize();
     delete[] this->array;
     this->array = new T[newSize];
     for (int i = 0; i < newSize; ++i) {
-        this->array[i] = myVector.get(i);
+        this->array[i] = myVector.getValue(i);
     }
-    this->capacity_ = newSize;
-    this->size_ = newSize;
+    this->capacity = newSize;
+    this->size = newSize;
     return *this;
 }
 
 template<typename T>
-int MyVector<T>::getCount() const {
-    return count;
+int MyVector<T>::getPreviousOperationValuesCount() const {
+    return previousOperationValuesCount;
 }
-
-template<typename T>
-void MyVector<T>::setCount(int count) {
-    MyVector::count = count;
-}
-
 
 template
 class MyVector<int>;

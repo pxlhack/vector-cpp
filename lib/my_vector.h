@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "my_iterator.h"
+#include <exception>
 
 using namespace std;
 
@@ -18,45 +19,49 @@ public:
 
     ~MyVector();
 
-    void init_vector(int init_capacity);
+    int getCapacity() const;
 
-    int size() const;
+    int getSize() const;
 
-    int capacity();
+    T getValue(int pos) const;
+
+    void pushBack(T val);
+
+    void insert(T val, int pos);
+
+    void erase(int pos);
 
     void clear();
 
-    bool is_empty();
+    bool contains(T val);
 
-    bool contains(T const &item);
+    bool isEmpty();
 
-    int index_of(T const &item);
+    int indexOf(T val);
 
-    T get(int index) const;
+    void setValue(T val, int pos);
 
-    void push_back(T const &item);
+    void removeByValue(T val);
 
-    void set(const T &item, int index);
+    MyIterator<T> begin() { return array; }
 
-    void insert(T item, int index);
+    MyIterator<T> end() { return array + size; }
 
-    void remove(T const &item);
+    MyReverseIterator<T> rbegin() { return array + size - 1; }
 
-    void erase(int index);
+    MyReverseIterator<T> rend() { return array - 1; }
+
+    MyVector<T> &operator=(const MyVector<T> &myVector);
 
     friend bool operator==(MyVector<T> &x, MyVector<T> &y) {
-        if (x.size() != y.size())
+        if (x.getSize() != y.getSize())
             return false;
 
-        for (int i = 0; i < x.size(); ++i) {
-            if (x.get(i) != y.get(i))
+        for (int i = 0; i < x.getSize(); ++i) {
+            if (x.getValue(i) != y.getValue(i))
                 return false;
         }
         return true;
-    }
-
-    friend bool operator!=(MyVector<T> &x, MyVector<T> &y) {
-        return !(x == y);
     }
 
     friend std::ostream &operator<<(std::ostream &out, MyVector<T> &myVector) {
@@ -64,37 +69,17 @@ public:
         return out;
     };
 
-    friend std::istream &operator>>(std::istream &in, MyVector<T> &myVector) {
-        T *obj = new T;
-        in >> *obj;
-        myVector.pushBack(*obj);
-        delete obj;
-        return in;
-    }
-
-    int getCount() const;
-
-    void setCount(int count);
-
-    MyVector<T> &operator=(const MyVector<T> &myVector);
-
-    MyIterator<T> begin() { return array; }
-
-    MyIterator<T> end() { return array + size_; }
-
-    MyReverseIterator<T> rbegin() { return array + size_ - 1; }
-
-    MyReverseIterator<T> rend() { return array - 1; }
-
+    int getPreviousOperationValuesCount() const;
 
 private:
-    int capacity_;
-    int size_;
-    T *array;
-    int count;
+    int capacity;
+    int size = 0;
+    T *array = nullptr;
+    int previousOperationValuesCount;
 
     std::string toString();
-    void resize();
+
+    void increaseCapacity();
 };
 
 

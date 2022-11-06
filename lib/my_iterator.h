@@ -20,10 +20,9 @@ public:
 
     T &operator--() { return *--cur; }
 
-
-    bool operator!=(const MyIterator &it) { return cur != it.cur; }
-
     bool operator==(const MyIterator &it) { return cur == it.cur; }
+
+    bool operator!=(const MyIterator &it) { return !(cur == it.cur); }
 
     T &operator*() { return *cur; }
 

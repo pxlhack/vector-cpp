@@ -2,7 +2,8 @@
 #define MY_VECTOR_USER_FUNCTIONS_H
 
 #include "my_vector.h"
-#include <vector>
+#include <regex>
+#include <string_view>
 
 void randomFillVector(MyVector<int> &myVector);
 

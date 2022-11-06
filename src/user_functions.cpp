@@ -21,7 +21,7 @@
 0) Exit\n"
 
 
-bool foo(int &value);
+
 
 void randomFillVector(MyVector<int> **myVector) {
     srand(time(NULL));
